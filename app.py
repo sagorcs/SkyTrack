@@ -23,18 +23,17 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# Premium Colorful Styling
+# Colorful Professional Styling
 # -------------------------------------------------
 st.markdown(
     """
     <style>
 
-    /* Main Background */
     .stApp {
         background:
-            radial-gradient(circle at top left, #eef6ff 0%, transparent 35%),
-            radial-gradient(circle at top right, #f4edff 0%, transparent 35%),
-            linear-gradient(180deg, #f8fbff 0%, #ffffff 45%, #f8fafc 100%);
+            radial-gradient(circle at top left, #e8f3ff 0%, transparent 32%),
+            radial-gradient(circle at top right, #f1eaff 0%, transparent 32%),
+            linear-gradient(180deg, #f8fbff 0%, #ffffff 50%, #f8fafc 100%);
     }
 
     .block-container {
@@ -43,7 +42,6 @@ st.markdown(
         padding-bottom: 3rem;
     }
 
-    /* Hero */
     .hero {
         background:
             linear-gradient(
@@ -65,10 +63,10 @@ st.markdown(
     .hero::after {
         content: "";
         position: absolute;
-        width: 260px;
-        height: 260px;
-        right: -60px;
-        top: -80px;
+        width: 280px;
+        height: 280px;
+        right: -70px;
+        top: -90px;
         background: rgba(255,255,255,0.08);
         border-radius: 50%;
     }
@@ -77,7 +75,6 @@ st.markdown(
         margin: 0;
         font-size: 52px;
         font-weight: 800;
-        letter-spacing: -1px;
     }
 
     .hero h3 {
@@ -92,24 +89,21 @@ st.markdown(
         font-size: 16px;
         color: #dce9ff;
         margin-top: 10px;
-        max-width: 800px;
+        max-width: 850px;
     }
 
-    /* Section Headings */
     h2 {
         color: #12213a;
         font-weight: 750 !important;
         margin-top: 25px !important;
     }
 
-    /* Success / Info / Warning */
     div[data-testid="stAlert"] {
         border-radius: 14px;
         border: none;
         box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
     }
 
-    /* Inputs */
     div[data-baseweb="select"] > div {
         border-radius: 12px !important;
         border: 1px solid #d8e1ec !important;
@@ -121,12 +115,11 @@ st.markdown(
         border-radius: 12px !important;
     }
 
-    /* Buttons */
     div.stButton > button {
         width: 100%;
         border: none;
         border-radius: 12px;
-        padding: 0.72rem 1.2rem;
+        padding: 0.75rem 1.2rem;
         font-weight: 700;
         font-size: 16px;
         color: white;
@@ -137,16 +130,14 @@ st.markdown(
             #7c3aed
         );
         box-shadow: 0 8px 18px rgba(79, 70, 229, 0.20);
-        transition: 0.2s ease-in-out;
     }
 
     div.stButton > button:hover {
+        color: white;
         transform: translateY(-1px);
         box-shadow: 0 12px 24px rgba(79, 70, 229, 0.28);
-        color: white;
     }
 
-    /* Metric Cards */
     div[data-testid="stMetric"] {
         background: linear-gradient(
             145deg,
@@ -169,54 +160,64 @@ st.markdown(
         font-weight: 800;
     }
 
-    /* Dataframes */
     div[data-testid="stDataFrame"] {
         border-radius: 18px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
     }
 
-    /* Custom Section Card */
-    .info-card {
-        background: linear-gradient(
-            135deg,
-            #eff6ff 0%,
-            #eef2ff 55%,
-            #faf5ff 100%
-        );
+    .booking-card {
+        background:
+            linear-gradient(
+                135deg,
+                #eff6ff 0%,
+                #eef2ff 45%,
+                #faf5ff 100%
+            );
         border: 1px solid #dbeafe;
-        border-radius: 18px;
-        padding: 22px;
-        margin: 15px 0 18px 0;
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.07);
+        border-radius: 20px;
+        padding: 24px;
+        margin: 18px 0;
+        box-shadow: 0 8px 22px rgba(59, 130, 246, 0.08);
     }
 
-    .info-card-title {
+    .booking-title {
+        color: #475569;
         font-size: 15px;
         font-weight: 700;
-        color: #334155;
-        margin-bottom: 4px;
+        margin-bottom: 7px;
     }
 
-    .info-card-value {
-        font-size: 23px;
-        font-weight: 800;
+    .booking-flight {
         color: #1d4ed8;
+        font-size: 24px;
+        font-weight: 800;
     }
 
-    /* Footer */
+    .total-fare {
+        margin-top: 14px;
+        padding: 12px 15px;
+        background: white;
+        border-radius: 12px;
+        color: #0f766e;
+        font-size: 19px;
+        font-weight: 800;
+        display: inline-block;
+    }
+
     .footer-box {
         margin-top: 20px;
         text-align: center;
         padding: 18px;
         border-radius: 16px;
         color: #64748b;
-        background: linear-gradient(
-            90deg,
-            #eff6ff,
-            #f5f3ff,
-            #ecfeff
-        );
+        background:
+            linear-gradient(
+                90deg,
+                #eff6ff,
+                #f5f3ff,
+                #ecfeff
+            );
         font-size: 14px;
     }
 
@@ -226,7 +227,7 @@ st.markdown(
 )
 
 # -------------------------------------------------
-# Hero
+# Hero Section
 # -------------------------------------------------
 st.markdown(
     """
@@ -234,9 +235,9 @@ st.markdown(
         <h1>✈️ SkyTrack</h1>
         <h3>Airline Reservation & Flight Management System</h3>
         <p>
-            Search flights by route and travel date, check real-time seat
-            availability, create reservations, and manage bookings through
-            a MySQL-powered cloud database.
+            Search flights by route and travel date, check seat availability,
+            calculate fares automatically, create bookings, and manage
+            reservations through a MySQL-powered cloud database.
         </p>
     </div>
     """,
@@ -249,15 +250,24 @@ st.markdown(
 try:
     conn = get_connection()
     conn.close()
-    st.success("✅ MySQL cloud database connected successfully.")
+
+    st.success(
+        "✅ MySQL cloud database connected successfully."
+    )
+
 except Exception as e:
-    st.error(f"Database connection failed: {e}")
+
+    st.error(
+        f"Database connection failed: {e}"
+    )
+
     st.stop()
 
 # -------------------------------------------------
 # Load Flights
 # -------------------------------------------------
 try:
+
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -284,7 +294,11 @@ try:
     conn.close()
 
 except Exception as e:
-    st.error(f"Could not load flights: {e}")
+
+    st.error(
+        f"Could not load flights: {e}"
+    )
+
     st.stop()
 
 # -------------------------------------------------
@@ -296,7 +310,8 @@ airport_options = sorted(
     list(
         set(
             [flight["FromAirport"] for flight in flights]
-            + [flight["ToAirport"] for flight in flights]
+            +
+            [flight["ToAirport"] for flight in flights]
         )
     )
 )
@@ -304,23 +319,29 @@ airport_options = sorted(
 search_col1, search_col2, search_col3 = st.columns(3)
 
 with search_col1:
+
     from_airport = st.selectbox(
         "🛫 Departure Airport",
         airport_options
     )
 
 with search_col2:
+
     to_airport = st.selectbox(
         "🛬 Arrival Airport",
         airport_options
     )
 
 with search_col3:
+
     travel_date = st.date_input(
         "📅 Travel Date",
         value=date.today()
     )
 
+# -------------------------------------------------
+# Filter Flights
+# -------------------------------------------------
 filtered_flights = [
     flight
     for flight in flights
@@ -357,7 +378,7 @@ if filtered_flights:
                 "Departure": flight["DepartureTime"],
                 "Arrival": flight["ArrivalTime"],
                 "Status": flight["FlightStatus"],
-                "Fare": f"${fare:.2f}"
+                "Fare / Passenger": f"${fare:.2f}"
             }
         )
 
@@ -385,54 +406,64 @@ if filtered_flights:
         )
 
         selected_flight = filtered_flights[
-            flight_labels.index(selected_flight_label)
+            flight_labels.index(
+                selected_flight_label
+            )
         ]
 
     else:
+
         selected_flight = filtered_flights[0]
 
-    total_amount = FLIGHT_FARES.get(
+    base_fare = FLIGHT_FARES.get(
         selected_flight["FlightNumber"],
         0.00
     )
 
     # -------------------------------------------------
-    # Selected Flight Summary
+    # Flight Summary
     # -------------------------------------------------
     st.markdown("## 🌤️ Selected Flight")
 
-    summary_col1, summary_col2, summary_col3, summary_col4 = st.columns(4)
+    metric1, metric2, metric3, metric4 = st.columns(4)
 
-    with summary_col1:
+    with metric1:
+
         st.metric(
             "✈️ Flight",
             selected_flight["FlightNumber"]
         )
 
-    with summary_col2:
+    with metric2:
+
         st.metric(
             "🕒 Departure",
-            selected_flight["DepartureTime"].strftime("%I:%M %p")
+            selected_flight[
+                "DepartureTime"
+            ].strftime("%I:%M %p")
         )
 
-    with summary_col3:
+    with metric3:
+
         st.metric(
             "📡 Status",
             selected_flight["FlightStatus"]
         )
 
-    with summary_col4:
+    with metric4:
+
         st.metric(
-            "💵 Ticket Fare",
-            f"${total_amount:.2f}"
+            "💵 Fare / Passenger",
+            f"${base_fare:.2f}"
         )
 
     # -------------------------------------------------
-    # Available Seats
+    # Load Available Seats
     # -------------------------------------------------
     st.markdown("## 💺 Available Seats")
 
     try:
+
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -450,7 +481,6 @@ if filtered_flights:
                     FROM Reservation r
                     WHERE r.SeatID = s.SeatID
                       AND r.FlightID = s.FlightID
-                      AND r.ReservationStatus = 'Confirmed'
               )
             ORDER BY s.SeatNumber
         """, (
@@ -463,7 +493,11 @@ if filtered_flights:
         conn.close()
 
     except Exception as e:
-        st.error(f"Could not load available seats: {e}")
+
+        st.error(
+            f"Could not load available seats: {e}"
+        )
+
         available_seats = []
 
     if available_seats:
@@ -483,199 +517,335 @@ if filtered_flights:
         # -------------------------------------------------
         st.markdown("## 🎫 Make a Reservation")
 
-        seat_labels = [
-            f'{seat["SeatNumber"]} • {seat["SeatClass"]}'
-            for seat in available_seats
-        ]
+        form_col1, form_col2 = st.columns(2)
 
-        reserve_col1, reserve_col2 = st.columns(2)
+        with form_col1:
 
-        with reserve_col1:
-            selected_seat_label = st.selectbox(
-                "💺 Choose a Seat",
-                seat_labels
-            )
-
-        selected_seat = available_seats[
-            seat_labels.index(selected_seat_label)
-        ]
-
-        with reserve_col2:
             passenger_id = st.number_input(
-                "👤 Passenger ID",
+                "👤 Booking Passenger ID",
                 min_value=1,
                 step=1,
                 value=1
             )
 
+        with form_col2:
+
+            passenger_count = st.number_input(
+                "👥 Number of Passengers",
+                min_value=1,
+                max_value=10,
+                step=1,
+                value=1
+            )
+
+        # -------------------------------------------------
+        # Seat Selection
+        # -------------------------------------------------
+        seat_lookup = {
+            f'{seat["SeatNumber"]} • {seat["SeatClass"]}':
+            seat
+            for seat in available_seats
+        }
+
+        seat_labels = list(
+            seat_lookup.keys()
+        )
+
+        selected_seat_labels = st.multiselect(
+            "💺 Select Seat(s)",
+            seat_labels,
+            max_selections=int(passenger_count)
+        )
+
+        selected_seats = [
+            seat_lookup[label]
+            for label in selected_seat_labels
+        ]
+
+        # -------------------------------------------------
+        # Fare Calculation
+        # -------------------------------------------------
+        total_amount = (
+            base_fare
+            *
+            int(passenger_count)
+        )
+
+        seat_text = (
+            ", ".join(
+                seat["SeatNumber"]
+                for seat in selected_seats
+            )
+            if selected_seats
+            else "Not selected"
+        )
+
         st.markdown(
             f"""
-            <div class="info-card">
-                <div class="info-card-title">
+            <div class="booking-card">
+
+                <div class="booking-title">
                     Booking Summary
                 </div>
-                <div class="info-card-value">
+
+                <div class="booking-flight">
                     {selected_flight["FlightNumber"]}
                     &nbsp; • &nbsp;
                     {from_airport} → {to_airport}
                 </div>
+
                 <br>
-                📅 {travel_date.strftime("%B %d, %Y")}
-                &nbsp;&nbsp; | &nbsp;&nbsp;
-                💺 Seat {selected_seat["SeatNumber"]}
-                &nbsp;&nbsp; | &nbsp;&nbsp;
-                💵 ${total_amount:.2f}
+
+                📅 <b>Travel Date:</b>
+                {travel_date.strftime("%B %d, %Y")}
+
+                <br><br>
+
+                👥 <b>Passengers:</b>
+                {passenger_count}
+
+                <br><br>
+
+                💺 <b>Selected Seats:</b>
+                {seat_text}
+
+                <br><br>
+
+                💵 <b>Fare:</b>
+                ${base_fare:.2f}
+                ×
+                {passenger_count}
+
+                <br>
+
+                <div class="total-fare">
+                    Total Fare: ${total_amount:.2f}
+                </div>
+
             </div>
             """,
             unsafe_allow_html=True
         )
 
+        # -------------------------------------------------
+        # Confirm Reservation
+        # -------------------------------------------------
         if st.button(
             "✅ Confirm Reservation",
             use_container_width=True
         ):
 
-            conn = None
-            cursor = None
+            # Require exact seat count
+            if len(selected_seats) != int(
+                passenger_count
+            ):
 
-            try:
-                conn = get_connection()
-                cursor = conn.cursor()
+                st.error(
+                    f"Please select exactly "
+                    f"{int(passenger_count)} seat(s) "
+                    f"for {int(passenger_count)} passenger(s)."
+                )
 
-                # Validate Passenger
-                cursor.execute("""
-                    SELECT PassengerID
-                    FROM Passenger
-                    WHERE PassengerID = %s
-                """, (
-                    passenger_id,
-                ))
+            elif base_fare <= 0:
 
-                passenger_exists = cursor.fetchone()
+                st.error(
+                    "Fare is not configured for this flight."
+                )
 
-                if not passenger_exists:
+            else:
 
-                    st.error(
-                        f"Passenger ID {passenger_id} does not exist."
-                    )
+                conn = None
+                cursor = None
 
-                else:
+                try:
 
-                    # Recheck Seat
+                    conn = get_connection()
+                    cursor = conn.cursor()
+
+                    # -----------------------------------------
+                    # Passenger Validation
+                    # -----------------------------------------
                     cursor.execute("""
                         SELECT
-                            SeatID,
-                            FlightID,
-                            SeatStatus
-                        FROM Seat
-                        WHERE SeatID = %s
-                        FOR UPDATE
+                            PassengerID,
+                            FirstName,
+                            LastName
+                        FROM Passenger
+                        WHERE PassengerID = %s
                     """, (
-                        selected_seat["SeatID"],
+                        passenger_id,
                     ))
 
-                    seat_record = cursor.fetchone()
+                    passenger = cursor.fetchone()
 
-                    if not seat_record:
-
-                        st.error(
-                            "Selected seat does not exist."
-                        )
-
-                    elif (
-                        seat_record["FlightID"]
-                        != selected_flight["FlightID"]
-                    ):
+                    if not passenger:
 
                         st.error(
-                            "Selected seat does not belong to this flight."
-                        )
-
-                    elif (
-                        seat_record["SeatStatus"]
-                        != "Available"
-                    ):
-
-                        st.error(
-                            "Selected seat is no longer available."
+                            f"Passenger ID "
+                            f"{passenger_id} "
+                            f"does not exist."
                         )
 
                     else:
 
-                        # Prevent Duplicate Booking
-                        cursor.execute("""
-                            SELECT ReservationID
-                            FROM Reservation
-                            WHERE FlightID = %s
-                              AND SeatID = %s
-                              AND ReservationStatus = 'Confirmed'
-                            LIMIT 1
-                        """, (
-                            selected_flight["FlightID"],
-                            selected_seat["SeatID"]
-                        ))
+                        booking_successful = True
 
-                        existing_booking = cursor.fetchone()
-
-                        if existing_booking:
-
-                            st.error(
-                                "This seat is already booked. "
-                                "Please select another seat."
-                            )
-
-                        else:
+                        # -----------------------------------------
+                        # Recheck all selected seats
+                        # -----------------------------------------
+                        for seat in selected_seats:
 
                             cursor.execute("""
-                                INSERT INTO Reservation
-                                (
-                                    PassengerID,
-                                    FlightID,
+                                SELECT
                                     SeatID,
-                                    ReservationStatus,
-                                    TotalAmount
-                                )
-                                VALUES (
-                                    %s,
-                                    %s,
-                                    %s,
-                                    'Confirmed',
-                                    %s
-                                )
+                                    FlightID,
+                                    SeatStatus
+                                FROM Seat
+                                WHERE SeatID = %s
+                                FOR UPDATE
                             """, (
-                                passenger_id,
-                                selected_flight["FlightID"],
-                                selected_seat["SeatID"],
-                                total_amount
+                                seat["SeatID"],
                             ))
+
+                            current_seat = (
+                                cursor.fetchone()
+                            )
+
+                            if not current_seat:
+
+                                booking_successful = False
+
+                                st.error(
+                                    f'Seat '
+                                    f'{seat["SeatNumber"]} '
+                                    f'does not exist.'
+                                )
+
+                                break
+
+                            if (
+                                current_seat["FlightID"]
+                                !=
+                                selected_flight["FlightID"]
+                            ):
+
+                                booking_successful = False
+
+                                st.error(
+                                    f'Seat '
+                                    f'{seat["SeatNumber"]} '
+                                    f'does not belong '
+                                    f'to this flight.'
+                                )
+
+                                break
+
+                            if (
+                                current_seat["SeatStatus"]
+                                !=
+                                "Available"
+                            ):
+
+                                booking_successful = False
+
+                                st.error(
+                                    f'Seat '
+                                    f'{seat["SeatNumber"]} '
+                                    f'is no longer available.'
+                                )
+
+                                break
+
+                            cursor.execute("""
+                                SELECT ReservationID
+                                FROM Reservation
+                                WHERE FlightID = %s
+                                  AND SeatID = %s
+                                LIMIT 1
+                            """, (
+                                selected_flight[
+                                    "FlightID"
+                                ],
+                                seat["SeatID"]
+                            ))
+
+                            old_booking = (
+                                cursor.fetchone()
+                            )
+
+                            if old_booking:
+
+                                booking_successful = False
+
+                                st.error(
+                                    f'Seat '
+                                    f'{seat["SeatNumber"]} '
+                                    f'has already been used '
+                                    f'in another reservation.'
+                                )
+
+                                break
+
+                        # -----------------------------------------
+                        # Insert Reservations
+                        # -----------------------------------------
+                        if booking_successful:
+
+                            for seat in selected_seats:
+
+                                cursor.execute("""
+                                    INSERT INTO Reservation
+                                    (
+                                        PassengerID,
+                                        FlightID,
+                                        SeatID,
+                                        ReservationStatus,
+                                        TotalAmount
+                                    )
+                                    VALUES (
+                                        %s,
+                                        %s,
+                                        %s,
+                                        'Confirmed',
+                                        %s
+                                    )
+                                """, (
+                                    passenger_id,
+                                    selected_flight[
+                                        "FlightID"
+                                    ],
+                                    seat["SeatID"],
+                                    base_fare
+                                ))
 
                             conn.commit()
 
                             st.success(
-                                f'🎉 Reservation confirmed! '
-                                f'Flight {selected_flight["FlightNumber"]}, '
-                                f'Seat {selected_seat["SeatNumber"]}, '
-                                f'Fare ${total_amount:.2f}.'
+                                f"🎉 Booking confirmed for "
+                                f"{int(passenger_count)} "
+                                f"passenger(s)! "
+                                f"Total Fare: "
+                                f"${total_amount:.2f}"
                             )
 
                             st.rerun()
 
-            except Exception as e:
+                except Exception as e:
 
-                if conn:
-                    conn.rollback()
+                    if conn:
+                        conn.rollback()
 
-                st.error(
-                    f"Reservation failed: {e}"
-                )
+                    st.error(
+                        f"Reservation failed: {e}"
+                    )
 
-            finally:
+                finally:
 
-                if cursor:
-                    cursor.close()
+                    if cursor:
+                        cursor.close()
 
-                if conn:
-                    conn.close()
+                    if conn:
+                        conn.close()
 
     else:
 
@@ -686,8 +856,9 @@ if filtered_flights:
 else:
 
     st.warning(
-        f"⚠️ No flights available from {from_airport} "
-        f"to {to_airport} on "
+        f"⚠️ No flights available from "
+        f"{from_airport} to {to_airport} "
+        f"on "
         f"{travel_date.strftime('%B %d, %Y')}."
     )
 
@@ -699,6 +870,7 @@ st.divider()
 st.markdown("## 📋 Manage Bookings")
 
 try:
+
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -745,24 +917,42 @@ try:
 
             booking_display.append(
                 {
-                    "Booking ID": booking["ReservationID"],
-                    "Passenger": booking["PassengerName"],
-                    "Flight": booking["FlightNumber"],
-                    "Route": (
-                        f'{booking["FromAirport"]} → '
-                        f'{booking["ToAirport"]}'
-                    ),
-                    "Travel Date": (
-                        booking["DepartureTime"].strftime(
-                            "%Y-%m-%d"
+                    "Booking ID":
+                        booking["ReservationID"],
+
+                    "Passenger":
+                        booking["PassengerName"],
+
+                    "Flight":
+                        booking["FlightNumber"],
+
+                    "Route":
+                        (
+                            f'{booking["FromAirport"]}'
+                            f' → '
+                            f'{booking["ToAirport"]}'
+                        ),
+
+                    "Travel Date":
+                        booking[
+                            "DepartureTime"
+                        ].strftime("%Y-%m-%d"),
+
+                    "Seat":
+                        booking["SeatNumber"],
+
+                    "Class":
+                        booking["SeatClass"],
+
+                    "Status":
+                        booking[
+                            "ReservationStatus"
+                        ],
+
+                    "Amount":
+                        (
+                            f'${float(booking["TotalAmount"]):.2f}'
                         )
-                    ),
-                    "Seat": booking["SeatNumber"],
-                    "Class": booking["SeatClass"],
-                    "Status": booking["ReservationStatus"],
-                    "Amount": (
-                        f'${float(booking["TotalAmount"]):.2f}'
-                    )
                 }
             )
 
@@ -772,16 +962,22 @@ try:
             hide_index=True
         )
 
+        # -------------------------------------------------
+        # Active Bookings
+        # -------------------------------------------------
         active_bookings = [
             booking
             for booking in bookings
-            if booking["ReservationStatus"] != "Cancelled"
+            if booking[
+                "ReservationStatus"
+            ] != "Cancelled"
         ]
 
         if active_bookings:
 
             booking_labels = [
-                f'Booking #{booking["ReservationID"]} • '
+                f'Booking '
+                f'#{booking["ReservationID"]} • '
                 f'{booking["PassengerName"]} • '
                 f'{booking["FlightNumber"]} • '
                 f'{booking["DepartureTime"].strftime("%Y-%m-%d")} • '
@@ -789,17 +985,24 @@ try:
                 for booking in active_bookings
             ]
 
-            selected_booking_label = st.selectbox(
-                "🗂️ Select a booking to cancel",
-                booking_labels
+            selected_booking_label = (
+                st.selectbox(
+                    "🗂️ Select a booking to cancel",
+                    booking_labels
+                )
             )
 
-            selected_booking = active_bookings[
-                booking_labels.index(
-                    selected_booking_label
-                )
-            ]
+            selected_booking = (
+                active_bookings[
+                    booking_labels.index(
+                        selected_booking_label
+                    )
+                ]
+            )
 
+            # -------------------------------------------------
+            # Cancel Reservation
+            # -------------------------------------------------
             if st.button(
                 "❌ Cancel Reservation",
                 use_container_width=True
@@ -809,6 +1012,7 @@ try:
                 cursor = None
 
                 try:
+
                     conn = get_connection()
                     cursor = conn.cursor()
 
@@ -818,15 +1022,17 @@ try:
                         WHERE ReservationID = %s
                           AND ReservationStatus != 'Cancelled'
                     """, (
-                        selected_booking["ReservationID"],
+                        selected_booking[
+                            "ReservationID"
+                        ],
                     ))
 
                     conn.commit()
 
                     st.success(
-                        f'✅ Booking '
-                        f'#{selected_booking["ReservationID"]} '
-                        f'cancelled successfully.'
+                        f"✅ Booking "
+                        f"#{selected_booking['ReservationID']} "
+                        f"cancelled successfully."
                     )
 
                     st.rerun()
@@ -874,7 +1080,8 @@ st.divider()
 st.markdown(
     """
     <div class="footer-box">
-        ✈️ <b>SkyTrack</b> &nbsp; • &nbsp;
+        ✈️ <b>SkyTrack</b>
+        &nbsp; • &nbsp;
         CS457 Data Modeling and Implementation Techniques
         &nbsp; • &nbsp;
         MySQL + Python + Streamlit
