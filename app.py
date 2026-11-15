@@ -94,7 +94,7 @@ except Exception as e:
 # ----------------------------
 try:
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
@@ -176,7 +176,7 @@ if filtered_flights:
 
     try:
         conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor()
 
         cursor.execute("""
             SELECT
@@ -317,7 +317,7 @@ st.markdown("## 📋 Manage Bookings")
 
 try:
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
