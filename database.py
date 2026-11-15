@@ -1,12 +1,15 @@
 import streamlit as st
-import mysql.connector
+import pymysql
+
 
 def get_connection():
-    return mysql.connector.connect(
+    return pymysql.connect(
         host=st.secrets["mysql"]["host"],
-        port=st.secrets["mysql"]["port"],
+        port=int(st.secrets["mysql"]["port"]),
         user=st.secrets["mysql"]["user"],
         password=st.secrets["mysql"]["password"],
         database=st.secrets["mysql"]["database"],
-        ssl_disabled=False
+        ssl={"ssl": {}},
+        cursorclass=pymysql.cursors.DictCursor,
+        autocommit=False
     )
