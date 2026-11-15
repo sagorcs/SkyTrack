@@ -42,15 +42,6 @@ st.markdown(
             opacity: 0.9;
         }
 
-        .section-card {
-            background: white;
-            padding: 22px;
-            border-radius: 16px;
-            border: 1px solid #e7ebf0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            margin-bottom: 18px;
-        }
-
         div.stButton > button {
             border-radius: 10px;
             font-weight: 600;
@@ -167,7 +158,25 @@ if filtered_flights:
         hide_index=True
     )
 
-    selected_flight = filtered_flights[0]
+    # If multiple flights exist for the same route,
+    # allow the user to choose one.
+    if len(filtered_flights) > 1:
+        flight_labels = [
+            f'{flight["FlightNumber"]} • '
+            f'{flight["DepartureTime"]}'
+            for flight in filtered_flights
+        ]
+
+        selected_flight_label = st.selectbox(
+            "Choose a Flight",
+            flight_labels
+        )
+
+        selected_flight = filtered_flights[
+            flight_labels.index(selected_flight_label)
+        ]
+    else:
+        selected_flight = filtered_flights[0]
 
     # ----------------------------
     # Available Seats
@@ -180,14 +189,21 @@ if filtered_flights:
 
         cursor.execute("""
             SELECT
-                SeatID,
-                SeatNumber,
-                SeatClass,
-                SeatStatus
-            FROM Seat
-            WHERE FlightID = %s
-              AND SeatStatus = 'Available'
-            ORDER BY SeatNumber
+                s.SeatID,
+                s.SeatNumber,
+                s.SeatClass,
+                s.SeatStatus
+            FROM Seat s
+            WHERE s.FlightID = %s
+              AND s.SeatStatus = 'Available'
+              AND NOT EXISTS (
+                    SELECT 1
+                    FROM Reservation r
+                    WHERE r.SeatID = s.SeatID
+                      AND r.FlightID = s.FlightID
+                      AND r.ReservationStatus = 'Confirmed'
+              )
+            ORDER BY s.SeatNumber
         """, (selected_flight["FlightID"],))
 
         available_seats = cursor.fetchall()
@@ -252,62 +268,183 @@ if filtered_flights:
             passenger_id = st.number_input(
                 "Passenger ID",
                 min_value=1,
-                step=1
+                step=1,
+                value=1
             )
 
         with form_col2:
             total_amount = st.number_input(
                 "Ticket Amount ($)",
                 min_value=0.0,
-                step=10.0
+                step=10.0,
+                value=0.0,
+                format="%.2f"
             )
 
         if st.button(
             "Confirm Reservation",
             use_container_width=True
         ):
-            try:
-                conn = get_connection()
-                cursor = conn.cursor()
 
-                cursor.execute("""
-                    INSERT INTO Reservation
-                    (
-                        PassengerID,
-                        FlightID,
-                        SeatID,
-                        ReservationStatus,
-                        TotalAmount
-                    )
-                    VALUES (%s, %s, %s, 'Confirmed', %s)
-                """, (
-                    passenger_id,
-                    selected_flight["FlightID"],
-                    selected_seat["SeatID"],
-                    total_amount
-                ))
-
-                conn.commit()
-
-                cursor.close()
-                conn.close()
-
-                st.success(
-                    f'Reservation confirmed for '
-                    f'{selected_flight["FlightNumber"]}, '
-                    f'Seat {selected_seat["SeatNumber"]}.'
+            # Ticket amount validation
+            if total_amount <= 0:
+                st.error(
+                    "Ticket amount must be greater than $0."
                 )
 
-                st.rerun()
+            else:
+                conn = None
+                cursor = None
 
-            except Exception as e:
-                st.error(f"Reservation failed: {e}")
+                try:
+                    conn = get_connection()
+                    cursor = conn.cursor()
+
+                    # ----------------------------
+                    # Validate Passenger
+                    # ----------------------------
+                    cursor.execute("""
+                        SELECT PassengerID
+                        FROM Passenger
+                        WHERE PassengerID = %s
+                    """, (passenger_id,))
+
+                    passenger_exists = cursor.fetchone()
+
+                    if not passenger_exists:
+                        st.error(
+                            f"Passenger ID {passenger_id} does not exist."
+                        )
+
+                    else:
+                        # ----------------------------
+                        # Check Seat Availability Again
+                        # ----------------------------
+                        cursor.execute("""
+                            SELECT
+                                SeatID,
+                                FlightID,
+                                SeatStatus
+                            FROM Seat
+                            WHERE SeatID = %s
+                            FOR UPDATE
+                        """, (
+                            selected_seat["SeatID"],
+                        ))
+
+                        seat_record = cursor.fetchone()
+
+                        if not seat_record:
+                            st.error(
+                                "Selected seat does not exist."
+                            )
+
+                        elif (
+                            seat_record["FlightID"]
+                            != selected_flight["FlightID"]
+                        ):
+                            st.error(
+                                "Selected seat does not belong "
+                                "to this flight."
+                            )
+
+                        elif (
+                            seat_record["SeatStatus"]
+                            != "Available"
+                        ):
+                            st.error(
+                                "Selected seat is no longer available."
+                            )
+
+                        else:
+                            # ----------------------------
+                            # Prevent Double Booking
+                            # ----------------------------
+                            cursor.execute("""
+                                SELECT ReservationID
+                                FROM Reservation
+                                WHERE FlightID = %s
+                                  AND SeatID = %s
+                                  AND ReservationStatus = 'Confirmed'
+                                LIMIT 1
+                            """, (
+                                selected_flight["FlightID"],
+                                selected_seat["SeatID"]
+                            ))
+
+                            existing_booking = cursor.fetchone()
+
+                            if existing_booking:
+                                st.error(
+                                    "This seat is already booked. "
+                                    "Please select another seat."
+                                )
+
+                            else:
+                                # ----------------------------
+                                # Create Reservation
+                                # ----------------------------
+                                cursor.execute("""
+                                    INSERT INTO Reservation
+                                    (
+                                        PassengerID,
+                                        FlightID,
+                                        SeatID,
+                                        ReservationStatus,
+                                        TotalAmount
+                                    )
+                                    VALUES (
+                                        %s,
+                                        %s,
+                                        %s,
+                                        'Confirmed',
+                                        %s
+                                    )
+                                """, (
+                                    passenger_id,
+                                    selected_flight["FlightID"],
+                                    selected_seat["SeatID"],
+                                    total_amount
+                                ))
+
+                                conn.commit()
+
+                                st.success(
+                                    f'Reservation confirmed for '
+                                    f'{selected_flight["FlightNumber"]}, '
+                                    f'Seat '
+                                    f'{selected_seat["SeatNumber"]}, '
+                                    f'Amount ${total_amount:.2f}.'
+                                )
+
+                                st.rerun()
+
+                except Exception as e:
+
+                    if conn:
+                        conn.rollback()
+
+                    st.error(
+                        f"Reservation failed: {e}"
+                    )
+
+                finally:
+
+                    if cursor:
+                        cursor.close()
+
+                    if conn:
+                        conn.close()
 
     else:
-        st.warning("No available seats for this flight.")
+        st.warning(
+            "No available seats for this flight."
+        )
 
 else:
-    st.warning("No flights found for this route.")
+    st.warning(
+        "No flights found for this route."
+    )
 
 # ----------------------------
 # Manage Bookings
@@ -377,13 +514,19 @@ try:
             )
 
             selected_booking = active_bookings[
-                booking_labels.index(selected_booking_label)
+                booking_labels.index(
+                    selected_booking_label
+                )
             ]
 
             if st.button(
                 "Cancel Reservation",
                 use_container_width=True
             ):
+
+                conn = None
+                cursor = None
+
                 try:
                     conn = get_connection()
                     cursor = conn.cursor()
@@ -392,33 +535,52 @@ try:
                         UPDATE Reservation
                         SET ReservationStatus = 'Cancelled'
                         WHERE ReservationID = %s
+                          AND ReservationStatus != 'Cancelled'
                     """, (
                         selected_booking["ReservationID"],
                     ))
 
                     conn.commit()
 
-                    cursor.close()
-                    conn.close()
-
                     st.success(
-                        f'Booking #{selected_booking["ReservationID"]} '
+                        f'Booking '
+                        f'#{selected_booking["ReservationID"]} '
                         f'cancelled successfully.'
                     )
 
                     st.rerun()
 
                 except Exception as e:
-                    st.error(f"Cancellation failed: {e}")
+
+                    if conn:
+                        conn.rollback()
+
+                    st.error(
+                        f"Cancellation failed: {e}"
+                    )
+
+                finally:
+
+                    if cursor:
+                        cursor.close()
+
+                    if conn:
+                        conn.close()
 
         else:
-            st.info("No active bookings available to cancel.")
+            st.info(
+                "No active bookings available to cancel."
+            )
 
     else:
-        st.info("No bookings found.")
+        st.info(
+            "No bookings found."
+        )
 
 except Exception as e:
-    st.error(f"Could not load bookings: {e}")
+    st.error(
+        f"Could not load bookings: {e}"
+    )
 
 # ----------------------------
 # Footer
